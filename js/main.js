@@ -162,11 +162,17 @@ const createTableRows = () => {
             }
         }
     }
-    tBody.querySelectorAll('td').forEach(td => {
-        const number = parseFloat(td.innerText.replace(',', '.'));
-        if (!isNaN(number)) {
-            td.innerText = formatNumber(number);
-        }
+    tBody.querySelectorAll('tr').forEach(row => {
+        const cells = row.querySelectorAll('td');
+    
+        cells.forEach((td, index) => {
+            if (index !== 0) {
+                const number = parseFloat(td.innerText.replace(',', '.'));
+                if (!isNaN(number)) {
+                    td.innerText = formatNumber(number);
+                }
+            }
+        });
     });
 }
 
