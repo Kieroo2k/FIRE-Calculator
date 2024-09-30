@@ -1,0 +1,156 @@
+@use "./colors" as colors;
+
+:root {
+  [data-mode="light"] {
+    --first-color: #{colors.$first-color-light};
+    --second-color: #{colors.$second-color-light};
+    --border-color: #{colors.$border-color-light};
+    --third-color: #{colors.$third-color-light};
+    --table-header-color: #{colors.$table-header-light};
+  }
+
+  [data-mode="dark"] {
+    --first-color: #{colors.$first-color-dark};
+    --second-color: #{colors.$second-color-dark};
+    --border-color: #{colors.$border-color-dark};
+    --third-color: #{colors.$third-color-dark};
+    --table-header-color: #{colors.$table-header-dark};
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  text-align: center;
+  color: var(--second-color);
+  background-color: var(--first-color);
+}
+header {
+  h1 {
+    font-size: 40px;
+    padding-top: 20px;
+    i {
+      margin-right: 5px;
+    }
+  }
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .color-buttons {
+    button {
+      margin: 0 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    button:hover {
+      transform: scale(0.9);
+    }
+
+    .light {
+      background: #f9f9f9;
+      border: 1px solid var(--second-color);
+    }
+    .dark {
+      background: #14161f;
+      border: 1px solid var(--second-color);
+    }
+  }
+}
+
+main {
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  .input-data {
+    margin: auto;
+    margin-bottom: 50px;
+    .box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      label {
+        padding-right: 15px;
+      }
+      input {
+        padding: 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+      }
+    }
+  }
+}
+.control-buttons {
+  display: flex;
+  justify-content: flex-end;
+  .calculate,
+  .clear {
+    display: block;
+    padding: 10px 0;
+    margin-left: 10px;
+    width: 100px;
+    font-size: 18px;
+    text-transform: capitalize;
+    color: var(--first-color);
+    background-color: var(--second-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .calculate:hover,
+  .clear:hover {
+    color: var(--second-color);
+    background-color: var(--border-color);
+  }
+}
+
+.output-data {
+  padding: 10px;
+  overflow-x: auto;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.responsive-table {
+  border-collapse: collapse;
+  font-size: 17px;
+  .amount::after {
+    content: " zł";
+  }
+  .percentage::after {
+    content: " %";
+  }
+  tr:nth-child(even) {
+    background-color: var(--third-color);
+  }
+  th {
+    position: sticky;
+    top: 0;
+    background-color: var(--table-header-color);
+  }
+}
+
+.responsive-table th,
+.responsive-table td {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1900px;
+}

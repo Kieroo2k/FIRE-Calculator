@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator FIRE</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@200;400;900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="css/hamburger.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="https://kit.fontawesome.com/615f19370b.js" crossorigin="anonymous"></script>
+</head>
+<body id="body" data-mode="light">
+    <div class="wrapper">
+        <header>
+            <h1><i class="fas fa-wallet"></i>Kalkulator FIRE</h1>
+            <div class="menu-buttons">
+                <div class="color-buttons">
+                    <button id="light" class="light"></button>
+                    <button id="dark" class="dark"></button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <form class="input-data">
+                <div class="box">
+                    <label for="starting_amount">Kwota startowa</label>
+                    <input id="starting_amount" type="number" step="0.01" min="0">
+                </div>
+                <div class="box">
+                    <label for="annual_contributions">Roczne dopłaty</label>
+                    <input id="annual_contributions" type="number" step="0.01" min="0">
+                </div>
+                <div class="box">
+                    <label for="starting_dividend_yield">Startowa stopa dywidendy [%]</label>
+                    <input id="starting_dividend_yield" type="number" step="0.01" min="0" max="100">
+                </div>
+                <div class="box">
+                    <label for="rate_of_return_shares">Roczna stopa zwrotu - akcje [%]</label>
+                    <input id="rate_of_return_shares" type="number" step="0.01" min="0" max="100">
+                </div>
+                <div class="box">
+                    <label for="annual_dividend_growth">Roczny wzrost dywidend [%]</label>
+                    <input id="annual_dividend_growth" type="number" step="0.01" min="0" max="100">
+                </div>
+                <div class="box">
+                    <label for="tax">Podatek [%]</label>
+                    <input id="tax" type="number" step="0.01" min="0" max="100">
+                </div>
+                <div class="box">
+                    <label for="tax_include">Czy uwzględnić podatek?</label>
+                    <input id="tax_include" type="checkbox">
+                </div>
+                <div class="box">
+                    <label for="dividends_reinvest">Czy reinwestować dywidendy?</label>
+                    <input id="dividends_reinvest" type="checkbox">
+                </div>
+                <div class="box">
+                    <label for="investment_time">Horyzont inwestycji [Years]</label>
+                    <input id="investment_time" type="number" step="1" min="0" max="100">
+                </div>
+                <div class="box">
+                    <label for="annual_inflation">Zakładana inflacja średnioroczna [%]</label>
+                    <input id="annual_inflation" type="number" step="0.01" min="0" max="100">
+                </div>
+                <div class="control-buttons">
+                    <button id="clear" class="clear">Wyczyść</button>
+                    <a id="calculate" class="calculate" href="#output_data">Przelicz</a>
+                </div>
+            </form>
+            <section id="output_data" class="output-data">
+                <table id="responsive_table" class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Rok</th>
+                            <th>Wartość portfela na początku roku</th>
+                            <th>Roczne dywidendy brutto</th>
+                            <th>Stopa dywidendy</th>
+                            <th>Wzrost kursu akcji</th>
+                            <th>Roczne dywidendy netto</th>
+                            <th>Wartość portfela na koniec roku</th>
+                            <th>Skumulowane wpłaty do portfela</th>
+                            <th>Skumulowany wzrost kursu akcji</th>
+                            <th>Skumulowane wypłaty dywidend</th>
+                            <th>Inflacja skumulowana</th>
+                            <th>Wartość portfela po uwzględnieniu inflacji</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_body">
+
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+    <script src="./js/main.js"></script>  
+</body>
+</html>
