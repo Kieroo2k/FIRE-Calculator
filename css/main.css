@@ -111,6 +111,7 @@ header h1 i {
 }
 
 main {
+  width: 100vw;
   font-size: 17px;
   display: flex;
   flex-direction: column;
