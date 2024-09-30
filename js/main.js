@@ -2,6 +2,8 @@ const lightBtn = document.querySelector('#light');
 const darkBtn = document.querySelector('#dark');
 body = document.querySelector('#body');
 
+const form = document.querySelector('#input_data');
+
 const startingAmount = document.querySelector('#starting_amount');
 const annualContributions = document.querySelector('#annual_contributions');
 const startingDividendYield = document.querySelector('#starting_dividend_yield');
@@ -21,7 +23,7 @@ const table = document.querySelector('#responsive_table');
 const tBody = table.querySelector('#t_body');
 
 const columnNumber = table.querySelectorAll('th').length;
-let yearNumber = 0, newStartingAmount = 0, newStartingDividendYield = 0, newRateOfReturnShares = 0, newAnnualDidivendGrowth = 0, rateOfReturnSharesSum = 0, cumulativeInflation = 0;
+let yearNumber = 0, newStartingAmount = 0, newStartingDividendYield = 0, newRateOfReturnShares = 0, newAnnualDidivendGrowth = 0, rateOfReturnSharesSum = 0, cumulativeInflation = 0, sumRateOfReturnShares = 0, sumDividends = 0;
 let firstYear = true;
 
 
@@ -100,13 +102,22 @@ const createTableRows = () => {
                 newStartingDividendYield = td.textContent;
             // Stopa dywidendy
             }else if (j==3){
+                if(firstYear){
+                    td.textContent = parseFloat(startingDividendYield.value).toFixed(2);
+                }else{
+                    if(annualContributions.value > 0){
+                        td.textContent = parseFloat(newStartingDividendYield / newStartingAmount * 100).toFixed(2);
+                    }else{
+                        td.textContent = parseFloat(startingDividendYield.value).toFixed(2);
+                    }
+                }
                 td.classList.add('percentage');
-                td.textContent = parseFloat(newStartingDividendYield / newStartingAmount * 100).toFixed(2);
             // Wzrots kursu akcji
             }else if (j==4){
                 td.textContent = parseFloat(newStartingAmount * rateOfReturnShares.value / 100).toFixed(2);
                 td.classList.add('amount');
                 newRateOfReturnShares = td.textContent;
+                sumRateOfReturnShares += parseFloat(newRateOfReturnShares);
             // Roczne dywidendy netto
             }else if (j==5){
                 if(taxInclude.checked){
@@ -116,6 +127,7 @@ const createTableRows = () => {
                 }
                 td.classList.add('amount');
                 newAnnualDidivendGrowth = td.textContent;
+                sumDividends += parseFloat(newAnnualDidivendGrowth);
             // Wartość portfela na koniec roku
             }else if (j==6){
                 if(dividendsReinvest.checked){
@@ -131,11 +143,11 @@ const createTableRows = () => {
                 td.classList.add('amount');
             // Skumulowany wzrost kursu akcji
             }else if (j==8){
-                td.textContent = parseFloat(newRateOfReturnShares).toFixed(2);
+                td.textContent = parseFloat(sumRateOfReturnShares).toFixed(2);
                 td.classList.add('amount');
             // Skumulowane wypłaty dywidend
             }else if (j==9){
-                td.textContent = parseFloat(newAnnualDidivendGrowth).toFixed(2);
+                td.textContent = parseFloat(sumDividends).toFixed(2);
                 td.classList.add('amount');
             // Skumulowana inflacja
             }else if (j==10){
@@ -144,30 +156,28 @@ const createTableRows = () => {
                 cumulativeInflation = td.textContent;
             // Wartość portfela po uwzględnieniu inflacji
             }else if (j==11){
-                td.textContent = parseFloat(parseFloat(newStartingAmount) * (100 - parseFloat(cumulativeInflation)) / 100).toFixed(2);
+                td.textContent = parseFloat(parseFloat(newStartingAmount) * (100 - parseFloat(annualInflation.value)) / 100).toFixed(2);
                 td.classList.add('amount');
                 firstYear = false;
             }
         }
     }
+    tBody.querySelectorAll('td').forEach(td => {
+        const number = parseFloat(td.innerText.replace(',', '.'));
+        if (!isNaN(number)) {
+            td.innerText = formatNumber(number);
+        }
+    });
 }
 
-clearBtn.addEventListener('click', e => {
-	e.preventDefault();
-    [startingAmount, annualContributions, startingDividendYield, rateOfReturnShares, annualDidivendGrowth, tax, investmentTime, annualInflation].forEach(e => {
-		e.value = ''
-	});
-    tBody.innerHTML = '';
-    yearNumber = 0; newStartingAmount = 0;
-    newStartingDividendYield = 0;
-    newRateOfReturnShares = 0;
-    newAnnualDidivendGrowth = 0;
-    rateOfReturnSharesSum = 0;
-    cumulativeInflation = 0;
-    firstYear = true;
-})
+function formatNumber(number) {
+    return new Intl.NumberFormat('pl-PL', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(number);
+  }
 
-calculateBtn.addEventListener('click', e => {
+const onSubmitAction = (e) => {
     e.preventDefault();
     tBody.innerHTML = '';
     yearNumber = 0; newStartingAmount = 0;
@@ -176,11 +186,46 @@ calculateBtn.addEventListener('click', e => {
     newAnnualDidivendGrowth = 0;
     rateOfReturnSharesSum = 0;
     cumulativeInflation = 0;
+    sumRateOfReturnShares = 0;
+    sumDividends = 0;
     firstYear = true;
+}
+
+clearBtn.addEventListener('click', e => {
+	e.preventDefault();
+    [startingAmount, annualContributions, startingDividendYield, rateOfReturnShares, annualDidivendGrowth, tax, investmentTime, annualInflation].forEach(e => {
+		e.value = ''
+	});
+    taxInclude.checked = false;
+    dividendsReinvest.checked = false;
+    onSubmitAction(e);
+})
+
+calculateBtn.addEventListener('click', e => {
+    onSubmitAction(e);
     createTableRows();
     tableSection.scrollIntoView({ behavior: 'smooth' });
 })
 
+document.addEventListener('keydown', function(e) {
+    if (event.key === 'Enter') {
+      const activeElement = document.activeElement;
+      if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+        onSubmitAction(e);
+        createTableRows();
+        tableSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+
 lightBtn.addEventListener('click', changeStyleToLight);
 darkBtn.addEventListener('click', changeStyleToDark);
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+    }
+});
+
+
 

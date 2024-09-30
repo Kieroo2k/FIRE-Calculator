@@ -65,6 +65,9 @@ table {
   margin: 0 auto;
   max-width: 1200px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 body {
@@ -129,6 +132,13 @@ main .input-data .box input {
   padding: 5px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+main .input-data .box input[type=number]::-webkit-outer-spin-button,
+main .input-data .box input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .control-buttons {
@@ -156,14 +166,11 @@ main .input-data .box input {
 }
 
 .output-data {
-  padding: 10px;
   overflow-x: auto;
-  max-height: 100vh;
   overflow-y: auto;
 }
 
 .responsive-table {
-  border-collapse: collapse;
   font-size: 17px;
 }
 .responsive-table .amount::after {
@@ -177,7 +184,6 @@ main .input-data .box input {
 }
 .responsive-table th {
   position: sticky;
-  top: 0;
   background-color: var(--table-header-color);
 }
 
@@ -192,6 +198,47 @@ main .input-data .box input {
   width: 100%;
   border-collapse: collapse;
   min-width: 1900px;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  display: none;
+  position: absolute;
+  width: 70px;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  color: var(--first-color);
+  background-color: var(--second-color);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tooltip:hover::before {
+  display: block;
+}
+
+.tooltip-right::before {
+  right: 110%;
+}
+
+.tooltip-annual-inflation::before,
+.tooltip-starting-dividend-yield::before,
+.tooltip-rate-of-return-shares::before,
+.tooltip-annual-dividend-growth::before,
+.tooltip-tax::before {
+  content: "%";
+}
+
+.tooltip-starting-amount::before,
+.tooltip-annual-contributions::before {
+  content: "PLN";
+}
+
+.tooltip-investment-time::before {
+  content: "W latach";
 }
 
 @media (min-width: 768px) {
@@ -211,9 +258,6 @@ main .input-data .box input {
   }
 }
 @media (min-width: 1200px) {
-  .wrapper {
-    max-width: 1920px;
-  }
   header h1 {
     font-size: 65px;
   }
